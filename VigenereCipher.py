@@ -5,7 +5,9 @@ def stringelements(str, length):
     return
 
 
-dim=26
+dim=255 #having dim and offset as global variables allows easy changes to the tabula recta
+offset=0
+
 count=0
 
 #create tabula recta
@@ -13,7 +15,7 @@ tabula=[[0] * dim for j in range(dim)]
 
 for i in range(dim):
     for j in range(dim):
-        tabula[i][j]=chr(((j + count) % 26) + ord('a'))
+        tabula[i][j]=chr(((j + count) % dim) + offset)
     count+=1
 
 
@@ -21,9 +23,6 @@ for i in range(dim):
 #checker
 for row in tabula:
    print(' '.join([str(elem) for elem in row]))
-
-
-
 
 #input stage
 plainstr = input("Please enter your arbitrary string:")
@@ -51,8 +50,8 @@ for j in range(len(plainstr)):
 
 #encode
 for j in range(len(plainstr)):
-    refa=ord(cipharray[1][j])-97
-    refb=ord(cipharray[0][j])-97
+    refa=ord(cipharray[1][j])-offset
+    refb=ord(cipharray[0][j])-offset
     cipharray[2][j] = tabula[refa][refb]
 
 #checker
@@ -62,7 +61,7 @@ for row in cipharray:
 cipherstr="".join(cipharray[2])
 
 #show encrypted message
-print("Your encrypted message is: " + cipherstr)
+print("\nYour encrypted message is: %s\n" % cipherstr)
 
 #decode
 decodearray=[[0] * len(cipherstr) for i in range(3)]
@@ -73,7 +72,7 @@ for j in range(len(cipherstr)):
     decodearray[0][j] = keyword[j % len(keyword)]
 
 for j in range(len(cipherstr)):
-    refa2=ord(decodearray[0][j])-97
+    refa2=ord(decodearray[0][j])-offset
     refb2=ord(decodearray[1][j])-ord(decodearray[0][j])
     decodearray[2][j] = tabula[0][refb2]
 
@@ -84,4 +83,4 @@ for row in decodearray:
 decodestr="".join(decodearray[2])
 
 #show encrypted message
-print("Your decrypted message is: " + decodestr)
+print("\nYour decrypted message is: %s\n" % decodestr)
